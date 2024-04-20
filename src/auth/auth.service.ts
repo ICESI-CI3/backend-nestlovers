@@ -30,11 +30,16 @@ export class AuthService {
         const email = registerDto.email;
         const password = await bcryptjs.hash(registerDto.password, 10);
 
-        return await this.userService.create({
+        await this.userService.create({
             name, 
             email,
             password
         });
+
+        return {
+            name,
+            email,
+        };
     }
 
     /**
@@ -56,11 +61,15 @@ export class AuthService {
             throw new UnauthorizedException('Invalid credentials');
         }
 
-        const payload = { email: user.email };
+        const payload = { email: user.email, role: user.role };
         const token = await this.jwtService.signAsync(payload); // Generates JWT token
 
         return {
             token,
         };
+    }
+
+    async profile({ email, role }: { email: string, role: string }) {
+        return await this.userService.findOneByEmail(email);
     }
 }
