@@ -49,7 +49,7 @@ export class AuthService {
      * @returns The JWT token if the login is successful. An error otherwise.
      */
     async login(loginDto: LoginDto) {
-        const user = await this.userService.findOneByEmail(loginDto.email);
+        const user = await this.userService.findByEmailWithPassword(loginDto.email);
 
         if (!user) {
             throw new UnauthorizedException('Email not found');
