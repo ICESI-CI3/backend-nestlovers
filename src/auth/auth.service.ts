@@ -70,11 +70,6 @@ export class AuthService {
     }
 
     async profile({ email, role }: { email: string, role: string }) {
-        // This is an example of how to restrict access to a route based on the user's role. However, this is not optimal because there can be many endpoints, and this logic will be repeated in all of them. Instead, use guards to protect routes.
-        // if (role !== 'admin') {
-        //     throw new UnauthorizedException('You are unauthorized to access this resource');
-        // }
-
         return await this.userService.findOneByEmail(email);
     }
 }

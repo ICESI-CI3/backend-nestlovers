@@ -24,6 +24,12 @@ export class AuthController {
         private readonly authService: AuthService,
     ) {}
 
+    /**
+     * The register method is a POST route handler that receives a registerDto object as an argument. This object contains the user's information to create a new account.
+     * 
+     * @param registerDto The user's information to create a new account.
+     * @returns The user's information.
+     */
     @Post('register')
     register(
         @Body()
@@ -32,6 +38,12 @@ export class AuthController {
         return this.authService.register(registerDto);
     }
 
+    /**
+     * The login method is a POST route handler that receives a loginDto object as an argument. This object contains the user's credentials to authenticate the user.
+     * 
+     * @param loginDto The user's credentials to authenticate the user.
+     * @returns The user's information and a token.
+     */
     @Post('login')
     login(
         @Body()
@@ -42,7 +54,15 @@ export class AuthController {
 
     @Get('profile')
     @Auth([ Role.ADMIN ])
-    profile(@Req() request: RequestWithUser) {
+    profile(
+        @Req() 
+        request: RequestWithUser,
+    ) {
+        // This is an example of how to restrict access to a route based on the user's role. However, this is not optimal because there can be many endpoints, and this logic will be repeated in all of them. Instead, use guards to protect routes.
+        // if (role !== 'admin') {
+        //     throw new UnauthorizedException('You are unauthorized to access this resource');
+        // }
+
         return this.authService.profile(request.user);
     }
 }

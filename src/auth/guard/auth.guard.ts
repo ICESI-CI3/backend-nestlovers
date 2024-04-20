@@ -9,8 +9,11 @@ dotenv.config();
  * The canActivate method is one of the main methods that a guard can implement. This method is executed before a request
  * to a specific path or endpoint is processed. The canActivate function returns a Boolean value or a promise that 
  * resolves to a Boolean value. Depending on the result of this function, access to the protected endpoint will be allowed or denied.
+ * 
+ * The AuthGuard class ensures that only authenticated users (with a valid token) can access the protected routes.
+ * 
+ * This guard can be added to the different routes that need to be protected. 
  */
-// The AuthGuard class ensures that only authenticated users (with a valid token) can access the protected routes.
 @Injectable()
 export class AuthGuard implements CanActivate {
   
