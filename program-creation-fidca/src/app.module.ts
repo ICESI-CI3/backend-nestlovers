@@ -1,14 +1,17 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 import * as dotenv from 'dotenv';
+import { APP_PIPE } from '@nestjs/core';
 
 dotenv.config();
 
 @Module({
   imports: [
+    AuthModule,
     UsersModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -17,12 +20,24 @@ dotenv.config();
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [],
+      ssl: process.env.DB_SSL === 'require' ? { rejectUnauthorized: false } : false,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+
+  controllers: [],
+
+  providers: [
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+      }),
+    }
+  ],
 })
 
 export class AppModule {}
