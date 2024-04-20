@@ -13,6 +13,12 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
+    /**
+     * Register a new user. 
+     * 
+     * @param registerDto The user data to register
+     * @returns The user information if the registration is successful. An error otherwise.
+     */
     async register(registerDto: RegisterDto) {
         const user = await this.userService.findOneByEmail(registerDto.email);
 
@@ -31,6 +37,12 @@ export class AuthService {
         });
     }
 
+    /**
+     * Login a user. 
+     * 
+     * @param loginDto The user data to login
+     * @returns The JWT token if the login is successful. An error otherwise.
+     */
     async login(loginDto: LoginDto) {
         const user = await this.userService.findOneByEmail(loginDto.email);
 
@@ -44,6 +56,11 @@ export class AuthService {
             throw new UnauthorizedException('Invalid credentials');
         }
 
-        return 'login';
+        const payload = { email: user.email };
+        const token = await this.jwtService.signAsync(payload); // Generates JWT token
+
+        return {
+            token,
+        };
     }
 }
