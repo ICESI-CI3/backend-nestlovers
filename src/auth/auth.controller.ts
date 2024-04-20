@@ -1,9 +1,21 @@
-import { Body, Controller, Get, Post, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from './guard/auth.guard';
-import { request } from 'http';
+import { Request, request } from 'express';
+import { Roles } from './decorators/roles.decorators';
+import { RolesGuard } from './guard/roles.guard';
+import { Role } from './enums/rol.enum';
+import { Auth } from './decorators/auth.decorators';
+
+// Define a new interface called RequestWithUser that extends the Request interface from Express. This interface will be used to define the user property in the request object.
+interface RequestWithUser extends Request {
+    user: {
+        email: string;
+        role: string;
+    };
+}
 
 @Controller('auth')
 export class AuthController {
@@ -17,7 +29,6 @@ export class AuthController {
         @Body()
         registerDto: RegisterDto,
     ) {
-        console.log(registerDto);
         return this.authService.register(registerDto);
     }
 
@@ -26,17 +37,12 @@ export class AuthController {
         @Body()
         loginDto: LoginDto,
     ) {
-        console.log(loginDto);
         return this.authService.login(loginDto);
     }
 
     @Get('profile')
-    @UseGuards(AuthGuard) // Apply the AuthGuard guard to the route. This will protect the route from unauthorized access.
-    profile(
-        @Request()
-        request
-    ) {
-        console.log(request.user);
-        return 'Profile';
+    @Auth([ Role.ADMIN ])
+    profile(@Req() request: RequestWithUser) {
+        return this.authService.profile(request.user);
     }
 }

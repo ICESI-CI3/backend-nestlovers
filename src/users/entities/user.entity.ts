@@ -17,7 +17,7 @@ export class User {
 
     @Column({ nullable: false })
     password: string;
-
-    // @Column({ nullable: false, default: 'user' })
-    // rol: string;
+    
+    @Column({ nullable: false, default: 'user' })
+    role: string;
 }
