@@ -8,14 +8,8 @@ import { Roles } from './decorators/roles.decorators';
 import { RolesGuard } from './guard/roles.guard';
 import { Role } from '../common/enums/rol.enum';
 import { Auth } from './decorators/auth.decorators';
-
-// Define a new interface called RequestWithUser that extends the Request interface from Express. This interface will be used to define the user property in the request object.
-interface RequestWithUser extends Request {
-    user: {
-        email: string;
-        role: string;
-    };
-}
+import { ActiveUser } from 'src/common/decorators/active-user.decorator';
+import { UserActiveI } from 'src/common/interfaces/user-active.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -55,14 +49,14 @@ export class AuthController {
     @Get('profile')
     @Auth([ Role.ADMIN ])
     profile(
-        @Req() 
-        request: RequestWithUser,
+        @ActiveUser() 
+        user: UserActiveI,
     ) {
         // This is an example of how to restrict access to a route based on the user's role. However, this is not optimal because there can be many endpoints, and this logic will be repeated in all of them. Instead, use guards to protect routes.
         // if (role !== 'admin') {
         //     throw new UnauthorizedException('You are unauthorized to access this resource');
         // }
 
-        return this.authService.profile(request.user);
+        return this.authService.profile(user);
     }
 }
