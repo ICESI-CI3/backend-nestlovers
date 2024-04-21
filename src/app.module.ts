@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import * as dotenv from 'dotenv';
 import { APP_PIPE } from '@nestjs/core';
 import { ProjectsModule } from './projects/projects.module';
+import { DocumentsModule } from './documents/documents.module';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ dotenv.config();
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
+    DocumentsModule,
   ],
 
   controllers: [],
