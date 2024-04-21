@@ -82,6 +82,13 @@ export class ProjectsService {
     return projects;
   }
 
+  /**
+   * Updates a project by its id.
+   * 
+   * @param id The project id.
+   * @param updateProjectDto The project data to update.
+   * @returns The updated project.
+   */
   async update(id: string, updateProjectDto: UpdateProjectDto) {
     const project = await this.projectsRepository.findOneBy({ id });
 

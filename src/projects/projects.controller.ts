@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -7,6 +7,9 @@ import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Role } from 'src/common/enums/rol.enum';
 import { UserActive } from 'src/common/decorators/user-active.decorator';
 import { UserActiveI } from 'src/common/interfaces/user-active.interface';
+import { OwnProjectGuard } from './guard/own-project.guard';
+import { AuthGuard } from 'src/auth/guard/auth.guard';
+import { AuthOwnProject } from './decorators/own-project.decorator';
 
 @Controller('projects')
 export class ProjectsController {
@@ -96,8 +99,19 @@ export class ProjectsController {
     return this.projectsService.findProjectsByUser(user.id);
   }
 
+  /**
+   * Updates a project by its id.
+   * 
+   * This route is protected and only users with the ADMIN or USER role can access it.
+   * 
+   * Also, the user must be the owner of the project to update it.
+   * 
+   * @param id The project id.
+   * @param updateProjectDto The project data to update.
+   * @returns The updated project.
+   */
   @Patch('update/:id')
-  @Auth([ Role.ADMIN, Role.USER ])
+  @AuthOwnProject([ Role.ADMIN, Role.USER ])
   update(
     @Param('id')
     id: string,
