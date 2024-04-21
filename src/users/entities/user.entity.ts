@@ -1,5 +1,6 @@
+import { Project } from 'src/projects/entities/project.entity';
 import { Role } from '../../common/enums/rol.enum';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 // @Entity({ name: 'users' })
 @Entity()
@@ -21,4 +22,7 @@ export class User {
     
     @Column({ type: 'enum', nullable: false, default: Role.USER, enum: Role })
     role: Role;
+
+    @OneToMany(() => Project, project => project.creator)
+    projects: Project[];
 }
