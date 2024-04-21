@@ -58,13 +58,39 @@ export class ProjectsController {
    * @param id The project id.
    * @returns The project with the given id.
    */
-  @Get(':id')
+  @Get('byID/:id')
   @Auth([ Role.ADMIN ])
   findOne(
     @Param('id') 
     id: string
   ) {
     return this.projectsService.findOne(id);
+  }
+
+  /**
+   * Returns all projects created by a user.
+   * 
+   * This route is protected and only users with the ADMIN role can access it.
+   * 
+   * @param id The user id.
+   * @returns All projects created by the user with the given id.
+   */
+  @Get('byUser/:userId')
+  @Auth([ Role.ADMIN ])
+  findProjectsByUser(
+    @Param('userId')
+    id: string
+  ) {
+    return this.projectsService.findProjectsByUser(id);
+  }
+
+  @Get('own/')
+  @Auth([ Role.ADMIN, Role.USER ])
+  findOwnProjects(
+    @UserActive()
+    user: UserActiveI
+  ) {
+    return this.projectsService.findProjectsByUser(user.id);
   }
 
   // @Patch(':id')

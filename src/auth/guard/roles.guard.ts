@@ -24,7 +24,7 @@ export class RolesGuard implements CanActivate {
   ) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const roles = this.reflector.getAllAndOverride<Role>(ROLES_KEY, [
+    const roles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -41,7 +41,7 @@ export class RolesGuard implements CanActivate {
     }
 
     if (!roles.includes(userRole)) {
-      throw new UnauthorizedException('Unauthorized');
+      throw new UnauthorizedException('Unauthorized. You are not allowed to access this route.');
     }
 
     return true;

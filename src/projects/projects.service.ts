@@ -62,6 +62,24 @@ export class ProjectsService {
     return project;
   }
 
+  /**
+   * Returns all projects created by a user.
+   * 
+   * @param userId The user id.
+   * @returns All projects created by the user.
+   */
+  async findProjectsByUser(userId: string) {
+    const user = await this.userService.findOne(userId);
+
+    const projects = await this.projectsRepository.findBy({ creator: user });
+
+    if (!projects || projects.length === 0) {
+      throw new NotFoundException('No projects found');
+    }
+
+    return projects;
+  }
+
   update(id: number, updateProjectDto: UpdateProjectDto) {
     return `This action updates a #${id} project`;
   }
