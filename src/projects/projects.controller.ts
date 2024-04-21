@@ -122,11 +122,39 @@ export class ProjectsController {
     return this.projectsService.update(id, updateProjectDto);
   }
 
-  // @Delete(':id')
-  // remove(
-  //   @Param('id') 
-  //   id: string
-  // ) {
-  //   return this.projectsService.remove(+id);
-  // }
+  /**
+   * Deletes a project by its id.
+   * 
+   * This route is protected and only users with the SUPER_ADMIN role can access it. This is because only a SUPER_ADMIN can delete any project.
+   * 
+   * @param id The project id.
+   * @returns The deleted project.
+   */
+  @Delete('delete/:id')
+  @Auth([ Role.SUPER_ADMIN ])
+  remove(
+    @Param('id') 
+    id: string
+  ) {
+    return this.projectsService.remove(id);
+  }
+
+  /**
+   * Deletes a project by its id.
+   * 
+   * This route is protected and only users with the ADMIN or USER role can access it.
+   * 
+   * Also, the user must be the owner of the project to delete it.
+   * 
+   * @param id The project id.
+   * @returns The deleted project.
+   */
+  @Delete('deleteMy/:id')
+  @AuthOwnProject([ Role.ADMIN, Role.USER ])
+  removeMy(
+    @Param('id')
+    id: string
+  ) {
+    return this.projectsService.remove(id);
+  }
 }

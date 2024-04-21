@@ -90,7 +90,7 @@ export class ProjectsService {
    * @returns The updated project.
    */
   async update(id: string, updateProjectDto: UpdateProjectDto) {
-    const project = await this.projectsRepository.findOneBy({ id });
+    const project = await this.findOne(id);
 
     if (!project) {
       throw new NotFoundException('Project not found');
@@ -99,7 +99,19 @@ export class ProjectsService {
     return this.projectsRepository.save({ ...project, ...updateProjectDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} project`;
+  /**
+   * Removes a project by its id.
+   * 
+   * @param id The project id.
+   * @returns The removed project.
+   */
+  async remove(id: string) {
+    const project = await this.findOne(id);
+
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+
+    return this.projectsRepository.remove(project);
   }
 }
