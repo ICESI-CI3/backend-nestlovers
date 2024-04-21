@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Project } from './entities/project.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersService } from 'src/users/users.service';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class ProjectsService {
@@ -15,18 +16,24 @@ export class ProjectsService {
     private readonly userService: UsersService,
   ) {}
 
-  async create(createProjectDto: CreateProjectDto, creatorId: number) {
+  /**
+   * Creates a new project.
+   * 
+   * Validates that the creator exists and, if not, throws a BadRequestException. Otherwise, it saves the project into de DB.
+   * 
+   * @param createProjectDto The project data to create.
+   * @param creator The user that creates the project.
+   * @returns The project created.
+   */
+  async create(createProjectDto: CreateProjectDto, creator: User) {
     const name = createProjectDto.name;
     const description = createProjectDto.description;
     const type = createProjectDto.type;
-
-    const creator = await this.userService.findOne(creatorId);
 
     if (!creator) {
       throw new BadRequestException('User not found');
     }
 
-    // return 'This action adds a new project';
     return this.projectsRepository.save({ name, description, type, creator });
   }
 
