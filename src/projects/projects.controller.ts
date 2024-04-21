@@ -7,15 +7,12 @@ import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Role } from 'src/common/enums/rol.enum';
 import { UserActive } from 'src/common/decorators/user-active.decorator';
 import { UserActiveI } from 'src/common/interfaces/user-active.interface';
-import { UsersService } from 'src/users/users.service';
-import { User } from 'src/users/entities/user.entity';
 
 @Controller('projects')
 export class ProjectsController {
 
   constructor(
     private readonly projectsService: ProjectsService,
-    private readonly usersService: UsersService,
   ) {}
 
   /**
@@ -24,21 +21,19 @@ export class ProjectsController {
    * This route is protected and only users with the ADMIN or USER role can access it.
    * 
    * @param createProjectDto The project data to create.
-   * @param user The user that creates the project. It is of type UserActiveI and, for that reason, the method uses the usersService to find the user.
+   * @param user The user that creates the project.
    * @returns The project created.
    */
   @Post()
   @Auth([ Role.ADMIN, Role.USER ])
-  async create(
+  create(
     @Body()
     createProjectDto: CreateProjectDto,
 
     @UserActive()
     user: UserActiveI,
   ) {
-    const creator: User = await this.usersService.findOneByEmail(user.email);
-
-    return this.projectsService.create(createProjectDto, creator);
+    return this.projectsService.create(createProjectDto, user.id);
   }
 
   /**
@@ -84,6 +79,14 @@ export class ProjectsController {
     return this.projectsService.findProjectsByUser(id);
   }
 
+  /**
+   * Returns all projects created by the user that is logged in.
+   * 
+   * This route is protected and only users with the ADMIN or USER role can access it.
+   * 
+   * @param user The user that is logged in.
+   * @returns All projects created by the user that is logged in.
+   */
   @Get('own/')
   @Auth([ Role.ADMIN, Role.USER ])
   findOwnProjects(

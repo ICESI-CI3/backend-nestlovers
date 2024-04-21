@@ -25,10 +25,12 @@ export class ProjectsService {
    * @param creator The user that creates the project.
    * @returns The project created.
    */
-  async create(createProjectDto: CreateProjectDto, creator: User) {
+  async create(createProjectDto: CreateProjectDto, creatorId: string) {
     const name = createProjectDto.name;
     const description = createProjectDto.description;
     const type = createProjectDto.type;
+
+    const creator = await this.userService.findOne(creatorId);
 
     if (!creator) {
       throw new BadRequestException('User not found');
