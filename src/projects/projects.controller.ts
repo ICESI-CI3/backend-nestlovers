@@ -18,6 +18,15 @@ export class ProjectsController {
     private readonly usersService: UsersService,
   ) {}
 
+  /**
+   * Creates a new project.
+   * 
+   * This route is protected and only users with the ADMIN or USER role can access it.
+   * 
+   * @param createProjectDto The project data to create.
+   * @param user The user that creates the project. It is of type UserActiveI and, for that reason, the method uses the usersService to find the user.
+   * @returns The project created.
+   */
   @Post()
   @Auth([ Role.ADMIN, Role.USER ])
   async create(
@@ -32,34 +41,47 @@ export class ProjectsController {
     return this.projectsService.create(createProjectDto, creator);
   }
 
+  /**
+   * Returns all projects in the database.
+   * 
+   * @returns All projects in the database.
+   */
   @Get()
+  @Auth([ Role.ADMIN ])
   findAll() {
     return this.projectsService.findAll();
   }
 
+  /**
+   * Returns a project by its id.
+   * 
+   * @param id The project id.
+   * @returns The project with the given id.
+   */
   @Get(':id')
+  @Auth([ Role.ADMIN ])
   findOne(
     @Param('id') 
     id: string
   ) {
-    return this.projectsService.findOne(+id);
+    return this.projectsService.findOne(id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id')
-    id: string, 
-    @Body() 
-    updateProjectDto: UpdateProjectDto
-  ) {
-    return this.projectsService.update(+id, updateProjectDto);
-  }
+  // @Patch(':id')
+  // update(
+  //   @Param('id')
+  //   id: string, 
+  //   @Body() 
+  //   updateProjectDto: UpdateProjectDto
+  // ) {
+  //   return this.projectsService.update(+id, updateProjectDto);
+  // }
 
-  @Delete(':id')
-  remove(
-    @Param('id') 
-    id: string
-  ) {
-    return this.projectsService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(
+  //   @Param('id') 
+  //   id: string
+  // ) {
+  //   return this.projectsService.remove(+id);
+  // }
 }

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Repository } from 'typeorm';
@@ -37,12 +37,29 @@ export class ProjectsService {
     return this.projectsRepository.save({ name, description, type, creator });
   }
 
+  /**
+   * Returns all projects in the database.
+   * 
+   * @returns All projects in the database.
+   */
   findAll() {
-    return `This action returns all projects`;
+    return this.projectsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} project`;
+  /**
+   * Returns a project by its id.
+   * 
+   * @param id The project id.
+   * @returns The project with the given id.
+   */
+  async findOne(id: string) {
+    const project = await this.projectsRepository.findOneBy({ id });
+
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+
+    return project;
   }
 
   update(id: number, updateProjectDto: UpdateProjectDto) {

@@ -52,8 +52,8 @@ export class UsersService {
    * @param id The user id.
    * @returns The user with the given id.
    */
-  findOne(id: number) {
-    return this.usersRepository.findOneBy({ id: id.toString() });
+  findOne(id: string) {
+    return this.usersRepository.findOneBy({ id });
   }
 
   /**

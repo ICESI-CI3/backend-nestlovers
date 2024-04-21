@@ -2,24 +2,38 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Auth } from 'src/auth/decorators/auth.decorators';
+import { Role } from 'src/common/enums/rol.enum';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
-
+  
+  constructor(
+    private readonly usersService: UsersService
+  ) {}
+  
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  @Auth([ Role.ADMIN ])
+  create(
+    @Body() 
+    createUserDto: CreateUserDto
+  ) {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
+  @Auth([ Role.ADMIN ])
   findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  @Auth([ Role.ADMIN ])
+  findOne(
+    @Param('id') 
+    id: string
+  ) {
+    return this.usersService.findOne(id);
   }
 
   // @Patch(':id')
