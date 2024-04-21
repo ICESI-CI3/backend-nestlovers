@@ -87,7 +87,7 @@ export class ProjectsController {
    * @param user The user that is logged in.
    * @returns All projects created by the user that is logged in.
    */
-  @Get('own/')
+  @Get('own')
   @Auth([ Role.ADMIN, Role.USER ])
   findOwnProjects(
     @UserActive()
@@ -96,15 +96,17 @@ export class ProjectsController {
     return this.projectsService.findProjectsByUser(user.id);
   }
 
-  // @Patch(':id')
-  // update(
-  //   @Param('id')
-  //   id: string, 
-  //   @Body() 
-  //   updateProjectDto: UpdateProjectDto
-  // ) {
-  //   return this.projectsService.update(+id, updateProjectDto);
-  // }
+  @Patch('update/:id')
+  @Auth([ Role.ADMIN, Role.USER ])
+  update(
+    @Param('id')
+    id: string,
+
+    @Body() 
+    updateProjectDto: UpdateProjectDto
+  ) {
+    return this.projectsService.update(id, updateProjectDto);
+  }
 
   // @Delete(':id')
   // remove(
