@@ -1,0 +1,8 @@
+**/*.localz
+**/*.local
+**/*.git
+**/*.DS_Store
+MER BD
+.env
+node_modules
+dist
