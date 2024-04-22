@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { AssignRoleDto } from './dto/assign-role.dto';
 
 @Injectable()
 export class UsersService {
@@ -63,5 +64,24 @@ export class UsersService {
    */
   findAll() {
     return this.usersRepository.find();
+  }
+  
+  /**
+   * Assigns a role to a user.
+   * 
+   * Validates that the role is a valid Role enum value. If the user does not exist, it throws a NotFoundException.
+   * 
+   * @param userId The id of the user to assign the role.
+   * @param assignRoleDto The role to assign.
+   * @returns The user with the new role.
+   */
+  async assignRole(userId: string, assignRoleDto: AssignRoleDto) {
+    const user = await this.findOne(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return this.usersRepository.save({ ...user, role: assignRoleDto.role });
   }
 }
