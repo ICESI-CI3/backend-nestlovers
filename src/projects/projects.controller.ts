@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } fro
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { Auth } from '../auth/decorators/auth.decorators';
+import { Auth } from '../common/decorators/auth.decorators';
 import { Role } from '../common/enums/rol.enum';
 import { UserActive } from '../common/decorators/user-active.decorator';
 import { UserActiveI } from '../common/interfaces/user-active.interface';
