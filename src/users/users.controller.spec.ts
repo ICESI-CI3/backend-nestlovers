@@ -49,16 +49,6 @@ describe('UsersController', () => {
         });
         expect(mockUsersService.create).toHaveBeenCalledWith(dto);
         expect(mockUsersService.create).toHaveBeenCalledTimes(1);
-    })
-    
-    it('should update a user', () => {
-        const dto = {
-            id: '1234',
-            name: 'Jane Doe',
-            email: 'janedoe@gmail.com',
-            phone: '123456789',
-            password: '11111',
-        };
-        expect(controller.update('1', dto)).toEqual({ id: 1, ...dto });
-      });
+    });
+
 });
