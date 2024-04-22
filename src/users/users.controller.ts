@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Auth } from '../common/decorators/auth.decorators';
 import { Role } from '../common/enums/rol.enum';
+import { AssignRoleDto } from './dto/assign-role.dto';
 
 @Controller('users')
 export class UsersController {
@@ -34,6 +35,29 @@ export class UsersController {
     id: string
   ) {
     return this.usersService.findOne(id);
+  }
+
+  /**
+   * Assigns a role to a user.
+   * 
+   * Validates that the role is a valid Role enum value. If the user does not exist, it throws a NotFoundException.
+   * 
+   * Only users with the SUPER_ADMIN role can assign roles.
+   * 
+   * @param userId The id of the user to assign the role.
+   * @param assignRoleDto The role to assign.
+   * @returns The user with the new role.
+   */
+  @Post('assignRole/:userId')
+  @Auth([ Role.SUPER_ADMIN ])
+  assignRole(
+    @Param('userId') 
+    userId: string,
+
+    @Body() 
+    assignRoleDto: AssignRoleDto
+  ) {
+    return this.usersService.assignRole(userId, assignRoleDto);
   }
 
   // @Patch(':id')
