@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { Document } from './entities/document.entity';
@@ -41,12 +41,29 @@ export class DocumentsService {
     return this.documentsRepository.save({ name: docName, phase: docPhase, part: docPart, content: docContent, project: project });
   }
 
+  /**
+   * Returns all the documents in the database.
+   * 
+   * @returns All documents in the database.
+   */
   findAll() {
-    return `This action returns all documents`;
+    return this.documentsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} document`;
+  /**
+   * Returns a document by its id.
+   * 
+   * @param id The id of the document.
+   * @returns The document with the given id.
+   */
+  async findOne(id: string) {
+    const doc = await this.documentsRepository.findOneBy({ id });
+
+    if(!doc) {
+      throw new NotFoundException('Document not found');
+    }
+
+    return doc;
   }
 
   /**
@@ -57,6 +74,24 @@ export class DocumentsService {
    */
   async findDocumentByName(name: string) {
     return await this.documentsRepository.findBy({ name }); 
+  }
+
+  /**
+   * Returns all the documents that belong to a project.
+   * 
+   * @param projectId The project id.
+   * @returns All documents that belong to the given project.
+   */
+  async findDocumentsByProject(projectId: string) {
+    const project = await this.projectsService.findOne(projectId);
+
+    const docs = await this.documentsRepository.findBy({ project: project });
+
+    if (!docs || docs.length === 0) {
+      throw new NotFoundException('No documents found.');
+    }
+
+    return docs;
   }
 
   update(id: number, updateDocumentDto: UpdateDocumentDto) {

@@ -5,6 +5,7 @@ import { UpdateDocumentDto } from './dto/update-document.dto';
 import { Role } from 'src/common/enums/rol.enum';
 import { AuthOwnProject } from 'src/projects/decorators/own-project.decorator';
 import { Phase } from 'src/common/enums/phase.enum';
+import { Auth } from 'src/auth/decorators/auth.decorators';
 
 @Controller('documents')
 export class DocumentsController {
@@ -36,14 +37,47 @@ export class DocumentsController {
     return this.documentsService.create(createDocumentDto, name, phase, part, projectId);
   }
 
+  /**
+   * Returns all the documents in the database.
+   * 
+   * @returns All documents in the database.
+   */
   @Get()
+  @Auth([ Role.ADMIN ])
   findAll() {
     return this.documentsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.documentsService.findOne(+id);
+  /**
+   * Returns a document by its id.
+   * 
+   * @param id The id of the document.
+   * @returns The document with the given id.
+   */
+  @Get('byID/:id')
+  @Auth([ Role.ADMIN ])
+  findOne(
+    @Param('id') 
+    id: string
+  ) {
+    return this.documentsService.findOne(id);
+  }
+
+  /**
+   * Returns all the documents that belong to a project.
+   * 
+   * This route is protected and only users with the ADMIN role can access it.
+   * 
+   * @param projectId The project id.
+   * @returns All the documents that belong to a project.
+   */
+  @Get('byProject/:id')
+  @Auth([ Role.ADMIN ])
+  findDocumentsByProject(
+    @Param('id')
+    projectId: string,
+  ) {
+    return this.documentsService.findDocumentsByProject(projectId);
   }
 
   @Patch(':id')
