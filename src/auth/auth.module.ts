@@ -25,6 +25,6 @@ dotenv.config();
     ],
   controllers: [AuthController],
   providers: [AuthService],
-  // exports: [JwtModule],
+  exports: [AuthService],
 })
 export class AuthModule {}

@@ -4,6 +4,7 @@ import { RegisterDto } from './dto/register.dto';
 import * as bcryptjs from 'bcryptjs';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -71,5 +72,20 @@ export class AuthService {
 
     async profile({ email, role }: { email: string, role: string }) {
         return await this.userService.findOneByEmail(email);
+    }
+
+    /**
+     * Register multiple users with seed data.
+     * 
+     * @param users The users to register.
+     */
+    async registerUsersWithSeedData(users: RegisterDto[]) {
+          for (const user of users) {
+            const userExists = await this.userService.findOneByEmail(user.email);
+
+            if (!userExists) {
+                await this.register(user);
+            }
+        }
     }
 }
