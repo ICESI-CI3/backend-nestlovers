@@ -82,18 +82,23 @@ export class DocumentsController {
     return this.documentsService.findDocumentsByProject(projectId);
   }
 
+  /**
+   * Retrieves documents owned by the current user for a specific project.
+   * 
+   * This route is protected and only users with the ADMIN or USER role can access it.
+   * 
+   * Also, the user must be the owner of the project to get the documents.
+   * 
+   * @param projectId The unique identifier of the project for which documents are to be retrieved.
+   * @returns An array of documents owned by the current user for the specified project.
+   */
   @Get('own/:id')
   @AuthOwnProject([ Role.ADMIN, Role.USER ])
   findOwnDocumentsByProject(
     @Param('id')
-    projectId: string,
-
-    @UserActive()
-    user: UserActiveI
+    projectId: string
   ) {
-    const userId = user.id;
-
-    return this.documentsService.findDocumentsByUserNProject(userId, projectId);
+    return this.documentsService.findDocumentsByProject(projectId);
   }
 
   @Patch(':id')

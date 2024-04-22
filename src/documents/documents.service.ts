@@ -96,20 +96,6 @@ export class DocumentsService {
     return docs;
   }
 
-  async findDocumentsByUserNProject(userId: string, projectId: string) {
-    const user = await this.userService.findOne(userId);
-
-    const project = await this.projectsService.findOne(projectId);
-
-    const docs = await this.documentsRepository.findBy({ project: project });
-
-    if (!docs || docs.length === 0) {
-      throw new NotFoundException('No documents found.');
-    }
-
-    return docs;
-  }
-
   update(id: number, updateDocumentDto: UpdateDocumentDto) {
     return `This action updates a #${id} document`;
   }
