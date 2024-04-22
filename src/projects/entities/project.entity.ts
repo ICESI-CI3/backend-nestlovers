@@ -1,5 +1,5 @@
-import { ProjectType } from "src/common/enums/project-type.enum";
-import { User } from "src/users/entities/user.entity";
+import { ProjectType } from "../../common/enums/project-type.enum";
+import { User } from "../../users/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
