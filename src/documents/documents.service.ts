@@ -96,8 +96,23 @@ export class DocumentsService {
     return docs;
   }
 
-  update(id: number, updateDocumentDto: UpdateDocumentDto) {
-    return `This action updates a #${id} document`;
+  /**
+   * Updates a document.
+   * 
+   * Validates that the document exists. If it does not, an exception is thrown. Otherwise, updates the document.
+   * 
+   * @param docId The id of the document to update.
+   * @param updateDocumentDto The content to update.
+   * @returns The updated document.
+   */
+  async update(docId: string, updateDocumentDto: UpdateDocumentDto) {
+    const doc = await this.findOne(docId);
+
+    if (!doc) {
+      throw new NotFoundException('Document not found');
+    }
+
+    return this.documentsRepository.save({ ...doc, ...updateDocumentDto });
   }
 
   remove(id: number) {

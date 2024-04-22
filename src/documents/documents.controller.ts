@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { DocumentsService } from './documents.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
@@ -8,6 +8,7 @@ import { Phase } from 'src/common/enums/phase.enum';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { UserActive } from 'src/common/decorators/user-active.decorator';
 import { UserActiveI } from 'src/common/interfaces/user-active.interface';
+import { DocOfProjectGuard } from './guard/doc-of-project.guard';
 
 @Controller('documents')
 export class DocumentsController {
@@ -101,9 +102,32 @@ export class DocumentsController {
     return this.documentsService.findDocumentsByProject(projectId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDocumentDto: UpdateDocumentDto) {
-    return this.documentsService.update(+id, updateDocumentDto);
+  /**
+   * Updates a document, that belongs to the project with the given id, by its id.
+   * 
+   * This route is protected and only users with the ADMIN or USER role can access it.
+   * 
+   * Also, the user must be the owner of the project to update the document.
+   * 
+   * @param projectId The project id.
+   * @param docId The document id.
+   * @param updateDocumentDto The document data to update.
+   * @returns The updated document.
+   */
+  @Patch('update/:id/:docId')
+  @AuthOwnProject([ Role.ADMIN, Role.USER ])
+  @UseGuards(DocOfProjectGuard)
+  update(
+    @Param('id') 
+    projectId: string,
+
+    @Param('docId')
+    docId: string,
+
+    @Body() 
+    updateDocumentDto: UpdateDocumentDto
+  ) {
+    return this.documentsService.update(docId, updateDocumentDto);
   }
 
   @Delete(':id')
