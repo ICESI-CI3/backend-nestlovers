@@ -80,7 +80,7 @@ export class AuthService {
      * @param users The users to register.
      */
     async registerUsersWithSeedData(users: RegisterDto[]) {
-        for (const user of users) {
+          for (const user of users) {
             const userExists = await this.userService.findOneByEmail(user.email);
 
             if (!userExists) {
