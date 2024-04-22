@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProjectsService } from 'src/projects/projects.service';
 import { Phase } from 'src/common/enums/phase.enum';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class DocumentsService {
@@ -14,6 +15,7 @@ export class DocumentsService {
     @InjectRepository(Document)
     private readonly documentsRepository: Repository<Document>,
     private readonly projectsService: ProjectsService,
+    private readonly userService: UsersService,
   ) {}
 
   /**
@@ -83,6 +85,20 @@ export class DocumentsService {
    * @returns All documents that belong to the given project.
    */
   async findDocumentsByProject(projectId: string) {
+    const project = await this.projectsService.findOne(projectId);
+
+    const docs = await this.documentsRepository.findBy({ project: project });
+
+    if (!docs || docs.length === 0) {
+      throw new NotFoundException('No documents found.');
+    }
+
+    return docs;
+  }
+
+  async findDocumentsByUserNProject(userId: string, projectId: string) {
+    const user = await this.userService.findOne(userId);
+
     const project = await this.projectsService.findOne(projectId);
 
     const docs = await this.documentsRepository.findBy({ project: project });

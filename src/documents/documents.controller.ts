@@ -6,6 +6,8 @@ import { Role } from 'src/common/enums/rol.enum';
 import { AuthOwnProject } from 'src/projects/decorators/own-project.decorator';
 import { Phase } from 'src/common/enums/phase.enum';
 import { Auth } from 'src/auth/decorators/auth.decorators';
+import { UserActive } from 'src/common/decorators/user-active.decorator';
+import { UserActiveI } from 'src/common/interfaces/user-active.interface';
 
 @Controller('documents')
 export class DocumentsController {
@@ -78,6 +80,20 @@ export class DocumentsController {
     projectId: string,
   ) {
     return this.documentsService.findDocumentsByProject(projectId);
+  }
+
+  @Get('own/:id')
+  @AuthOwnProject([ Role.ADMIN, Role.USER ])
+  findOwnDocumentsByProject(
+    @Param('id')
+    projectId: string,
+
+    @UserActive()
+    user: UserActiveI
+  ) {
+    const userId = user.id;
+
+    return this.documentsService.findDocumentsByUserNProject(userId, projectId);
   }
 
   @Patch(':id')
