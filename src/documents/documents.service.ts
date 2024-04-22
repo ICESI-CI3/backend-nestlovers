@@ -4,6 +4,11 @@ import { UpdateDocumentDto } from './dto/update-document.dto';
 
 @Injectable()
 export class DocumentsService {
+
+  constructor (
+
+  ) {}
+
   create(createDocumentDto: CreateDocumentDto) {
     return 'This action adds a new document';
   }

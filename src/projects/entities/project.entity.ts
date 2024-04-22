@@ -1,6 +1,7 @@
 import { ProjectType } from "src/common/enums/project-type.enum";
+import { Document } from "src/documents/entities/document.entity";
 import { User } from "src/users/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Project {
@@ -21,5 +22,8 @@ export class Project {
 
     @ManyToOne(() => User, user => user.projects)
     @JoinColumn({ name: 'creatorId' })
-    creator: User;
+    readonly creator: User;
+
+    @OneToMany(() => Document, document => document.project)
+    readonly documents: Document[];
 }
