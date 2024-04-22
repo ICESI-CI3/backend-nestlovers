@@ -16,6 +16,18 @@ export class DocumentsService {
     private readonly projectsService: ProjectsService,
   ) {}
 
+  /**
+   * Creates a new document.
+   * 
+   * Validates that there is no another document with the same name. If there is, an exception is thrown. Otherwise, saves the document.s
+   * 
+   * @param createDocumentDto The content of the document.
+   * @param docName The name of the document.
+   * @param docPhase The phase to which the document belongs.
+   * @param docPart The part to which the document belongs.
+   * @param projectId The id of the project to which the document belongs.
+   * @returns The document created.
+   */
   async create(createDocumentDto: CreateDocumentDto, docName: string, docPhase: Phase, docPart: number, projectId: string) {
     const document = await this.findDocumentByName(docName);
 
@@ -37,6 +49,12 @@ export class DocumentsService {
     return `This action returns a #${id} document`;
   }
 
+  /**
+   * Returns a document by its name.
+   * 
+   * @param name The name of the document.
+   * @returns The document with the given name.
+   */
   async findDocumentByName(name: string) {
     return await this.documentsRepository.findBy({ name }); 
   }

@@ -13,6 +13,13 @@ export class DocumentsController {
     private readonly documentsService: DocumentsService
   ) {}
 
+  /**
+   * Creates a new document corresponding to Phase 1, Part 1 for a specific project.
+   * 
+   * @param createDocumentDto DTO containing the necessary data to create the document. It includes the content of the document.
+   * @param projectId Unique identifier of the project the document belongs to.
+   * @returns The created document.
+   */
   @Post('docPhase1Part1/project/:id')
   @AuthOwnProject([ Role.ADMIN, Role.USER ])
   createPhase1Part1(
