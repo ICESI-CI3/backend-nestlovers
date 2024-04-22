@@ -115,7 +115,21 @@ export class DocumentsService {
     return this.documentsRepository.save({ ...doc, ...updateDocumentDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} document`;
+  /**
+   * Removes a document.
+   * 
+   * Validates that the document exists. If it does not, an exception is thrown. Otherwise, removes the document.
+   * 
+   * @param id The id of the document to remove.
+   * @returns The removed document.
+   */
+  async remove(id: string) {
+    const doc = await this.findOne(id);
+
+    if (!doc) {
+      throw new NotFoundException('Document not found');
+    }
+
+    return this.documentsRepository.remove(doc);
   }
 }

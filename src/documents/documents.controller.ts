@@ -126,8 +126,39 @@ export class DocumentsController {
     return this.documentsService.update(docId, updateDocumentDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.documentsService.remove(+id);
+  /**
+   * Removes a document by its id.
+   * 
+   * This route is protected and only users with the SUPER_ADMIN role can access it. This is because only a SUPER_ADMIN can delete any document.
+   * 
+   * @param id The document id.
+   * @returns The removed document.
+   */
+  @Delete('delete/:id')
+  @Auth([ Role.SUPER_ADMIN ])
+  remove(
+    @Param('id') 
+    id: string
+  ) {
+    return this.documentsService.remove(id);
+  }
+
+  /**
+   * Removes a document by its id.
+   * 
+   * This route is protected and only users with the ADMIN or USER role can access it.
+   * 
+   * Also, the user must be the owner of the document to delete it.
+   * 
+   * @param docId The document id.
+   * @returns The removed document.
+   */
+  @Delete('deleteMy/:docId')
+  @AuthOwnDocument([ Role.ADMIN, Role.USER ])
+  removeMy(
+    @Param('id')
+    id: string
+  ) {
+    return this.documentsService.remove(id);
   }
 }
