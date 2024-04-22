@@ -5,7 +5,7 @@ import { UpdateDocumentDto } from './dto/update-document.dto';
 import { Role } from 'src/common/enums/rol.enum';
 import { AuthOwnProject } from 'src/projects/decorators/own-project.decorator';
 import { Phase } from 'src/common/enums/phase.enum';
-import { Auth } from 'src/auth/decorators/auth.decorators';
+import { Auth } from 'src/common/decorators/auth.decorators';
 import { UserActive } from 'src/common/decorators/user-active.decorator';
 import { UserActiveI } from 'src/common/interfaces/user-active.interface';
 import { DocOfProjectGuard } from './guard/doc-of-project.guard';
