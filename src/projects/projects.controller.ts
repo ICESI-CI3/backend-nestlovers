@@ -2,13 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } fro
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { Request } from 'express';
 import { Auth } from '../auth/decorators/auth.decorators';
 import { Role } from '../common/enums/rol.enum';
 import { UserActive } from '../common/decorators/user-active.decorator';
 import { UserActiveI } from '../common/interfaces/user-active.interface';
-import { OwnProjectGuard } from './guard/own-project.guard';
-import { AuthGuard } from 'src/auth/guard/auth.guard';
 import { AuthOwnProject } from './decorators/own-project.decorator';
 
 @Controller('projects')
