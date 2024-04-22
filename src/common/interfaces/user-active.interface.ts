@@ -1,0 +1,5 @@
+export interface UserActiveI {
+    id: string;
+    email: string;
+    role: string;
+}
