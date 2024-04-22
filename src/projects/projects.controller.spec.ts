@@ -14,6 +14,16 @@ import { ProjectsModule } from './projects.module';
 describe('ProjectsController', () => {
     let controller: ProjectsController;
     let service: ProjectsService;
+    
+    const mockUsersService = {
+        id: '1',
+        name: 'Test User',
+        email: 'test@example.com',
+        phone: '123456789',
+        password: 'password',
+        role: Role.USER,
+        projects: []        
+    }
 
     const mockProjectsService = {
         create: jest.fn((createProjectDto: CreateProjectDto, creatorId: string) => {
@@ -39,21 +49,25 @@ describe('ProjectsController', () => {
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
+
             imports: [
                 JwtModule.register({
                   global: true,
                   secret: process.env.SECRET_KEY,
                   signOptions: { expiresIn: '1d' },
                 }),
-                UsersModule,
-                ProjectsModule,
               ],
+            
             controllers: [ProjectsController, UsersController],
             providers: [
                 {
                     provide: ProjectsService,
                     useValue: mockProjectsService,
                 },
+                {
+                    provide: UsersService,
+                    useValue: mockUsersService,
+                }
             ],
             
         }).compile();
