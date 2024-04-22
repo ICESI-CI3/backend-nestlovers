@@ -1,4 +1,4 @@
-import { Project } from 'src/projects/entities/project.entity';
+import { Project } from '../../projects/entities/project.entity';
 import { Role } from '../../common/enums/rol.enum';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
