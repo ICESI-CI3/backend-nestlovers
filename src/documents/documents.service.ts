@@ -75,7 +75,7 @@ export class DocumentsService {
    * @returns The document with the given name.
    */
   async findDocumentByName(name: string) {
-    return await this.documentsRepository.findBy({ name }); 
+    return await this.documentsRepository.findOneBy({ name }); 
   }
 
   /**

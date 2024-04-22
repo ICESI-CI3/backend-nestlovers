@@ -9,6 +9,7 @@ import { Auth } from 'src/auth/decorators/auth.decorators';
 import { UserActive } from 'src/common/decorators/user-active.decorator';
 import { UserActiveI } from 'src/common/interfaces/user-active.interface';
 import { DocOfProjectGuard } from './guard/doc-of-project.guard';
+import { AuthOwnDocument } from './decorators/own-document.decorator';
 
 @Controller('documents')
 export class DocumentsController {
@@ -103,24 +104,19 @@ export class DocumentsController {
   }
 
   /**
-   * Updates a document, that belongs to the project with the given id, by its id.
+   * Updates a document by its id.
    * 
    * This route is protected and only users with the ADMIN or USER role can access it.
    * 
-   * Also, the user must be the owner of the project to update the document.
+   * Also, the user must be the owner of the document to update it.
    * 
-   * @param projectId The project id.
    * @param docId The document id.
    * @param updateDocumentDto The document data to update.
    * @returns The updated document.
    */
-  @Patch('update/:id/:docId')
-  @AuthOwnProject([ Role.ADMIN, Role.USER ])
-  @UseGuards(DocOfProjectGuard)
+  @Patch('update/:docId')
+  @AuthOwnDocument([ Role.ADMIN, Role.USER ])
   update(
-    @Param('id') 
-    projectId: string,
-
     @Param('docId')
     docId: string,
 
