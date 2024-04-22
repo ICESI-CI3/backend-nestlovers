@@ -2,22 +2,31 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { DocumentsService } from './documents.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
-import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Role } from 'src/common/enums/rol.enum';
-import { UserActive } from 'src/common/decorators/user-active.decorator';
-import { UserActiveI } from 'src/common/interfaces/user-active.interface';
+import { AuthOwnProject } from 'src/projects/decorators/own-project.decorator';
+import { Phase } from 'src/common/enums/phase.enum';
 
 @Controller('documents')
 export class DocumentsController {
-  constructor(private readonly documentsService: DocumentsService) {}
 
-  @Post()
-  @Auth([ Role.ADMIN, Role.USER ])
-  create(
+  constructor(
+    private readonly documentsService: DocumentsService
+  ) {}
+
+  @Post('docPhase1Part1/project/:id')
+  @AuthOwnProject([ Role.ADMIN, Role.USER ])
+  createPhase1Part1(
     @Body()
     createDocumentDto: CreateDocumentDto,
+
+    @Param('id')
+    projectId: string,
   ) {
-    return this.documentsService.create(createDocumentDto);
+    const name = `Fase 1. (1. A_B_C) - Project ${ projectId }`;
+    const phase = Phase.PHASE1;
+    const part = 1;
+    
+    return this.documentsService.create(createDocumentDto, name, phase, part, projectId);
   }
 
   @Get()

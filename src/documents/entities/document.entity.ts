@@ -5,28 +5,28 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "t
 @Entity()
 export class Document {
     @PrimaryGeneratedColumn()
-    readonly id: string;
+    id: string;
 
-    @Column({ nullable: false })
-    readonly name: string;
+    @Column({ nullable: false, unique: true })
+    name: string;
 
     @Column({ nullable: false, default: 0 })
-    readonly progress_percentage: number;
+    progress_percentage: number;
 
     @Column({ type: 'enum', enum: Phase, nullable: false })
-    readonly phase: Phase;
+    phase: Phase;
 
     @Column({ nullable: false })
-    readonly part: number;
+    part: number;
 
     // This column will contain all the information that the user writes.
     @Column({ type: 'text', nullable: false })
-    readonly content: string;
+    content: string;
 
     @Column({ nullable: false })
-    readonly projectId: number;
+    projectId: number;
 
     @ManyToOne(() => Project, project => project.documents)
     @JoinColumn({ name: 'projectId' })
-    readonly project: Project;
+    project: Project;
 }

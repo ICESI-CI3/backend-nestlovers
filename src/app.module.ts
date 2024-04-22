@@ -16,6 +16,7 @@ dotenv.config();
     AuthModule,
     UsersModule,
     ProjectsModule,
+    DocumentsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -27,7 +28,6 @@ dotenv.config();
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    DocumentsModule,
   ],
 
   controllers: [],
