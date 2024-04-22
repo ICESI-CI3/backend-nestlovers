@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { Role } from '../common/enums/rol.enum';
-import { Auth } from './decorators/auth.decorators';
+import { Auth } from '../common/decorators/auth.decorators';
 import { UserActive } from 'src/common/decorators/user-active.decorator';
 import { UserActiveI } from 'src/common/interfaces/user-active.interface';
 

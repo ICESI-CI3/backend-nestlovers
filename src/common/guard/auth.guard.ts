@@ -33,9 +33,7 @@ export class AuthGuard implements CanActivate {
 
     try {
       
-      const payload = this.jwtService.verify(token, {
-        secret: process.env.SECRET_KEY,
-      });
+      const payload = this.jwtService.verify(token);
 
       // Inject the user object into the request object. It is useful to access the user object in the controller.
       request.user = payload;

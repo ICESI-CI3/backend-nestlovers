@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorators';
-import { Role } from '../../common/enums/rol.enum';
+import { Role } from '../enums/rol.enum';
 
 /**
  * Create a new guard called RolesGuard that implements the CanActivate interface. This guard will check if the user has the required role to access the route.
