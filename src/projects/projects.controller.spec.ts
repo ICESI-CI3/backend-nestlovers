@@ -44,6 +44,80 @@ describe('ProjectsController', () => {
                 },
             };
         }),
+        findAll: jest.fn(() => [
+            {
+                id: '1', 
+                name: 'Project 1', 
+                email: 'project1@example.com', 
+                description: 'project1 description', 
+                type: ProjectType.PRE,
+                creatorId: '1',
+                creator: {
+                    id: '1',
+                    name: 'Test User',
+                    email: 'test@example.com',
+                    phone: '123456789',
+                    password: 'password',
+                    role: Role.USER,
+                    projects: []
+                },
+            },
+            {
+                id: '2', 
+                name: 'Project 2', 
+                email: 'project2@example.com', 
+                description: 'project2 description', 
+                type: ProjectType.PRE,
+                creatorId: '2',
+                creator: {
+                    id: '2',
+                    name: 'Test User',
+                    email: 'test2@example.com',
+                    phone: '123456789',
+                    password: 'password',
+                    role: Role.USER,
+                    projects: []
+                },
+            },
+        ]),
+
+        findOne: jest.fn(id =>({
+
+            id: '2', 
+            name: 'Project 2', 
+            email: 'project2@example.com', 
+            description: 'project2 description', 
+            type: ProjectType.PRE,
+            creatorId: '2',
+            creator: {
+                id: '2',
+                name: 'Test User',
+                email: 'test2@example.com',
+                phone: '123456789',
+                password: 'password',
+                role: Role.USER,
+                projects: []
+            },})),
+
+            findProjectsByUser: jest.fn().mockReturnValue({
+    id: '2',
+    name: 'Project 2',
+    email: 'project2@example.com',
+    description: 'project2 description', 
+    type: ProjectType.PRE,
+    creatorId: '2',
+    creator: {
+        id: '2',
+        name: 'Test User',
+        email: 'test2@example.com',
+        phone: '123456789',
+        password: 'password',
+        role: Role.USER,
+        projects: [],
+    },
+}),
+            
+
         // Define otros métodos de ProjectsService según sea necesario
     };
 
@@ -74,6 +148,105 @@ describe('ProjectsController', () => {
 
         controller = module.get<ProjectsController>(ProjectsController);
         service = module.get<ProjectsService>(ProjectsService);
+    });
+
+    it('should return one project by its creator id', () => {
+
+        const result = controller.findProjectsByUser('2')
+
+        expect(result).toEqual({
+
+            id: '2', 
+            name: 'Project 2', 
+            email: 'project2@example.com', 
+            description: 'project2 description', 
+            type: ProjectType.PRE,
+            creatorId: '2',
+            creator: {
+                id: '2',
+                name: 'Test User',
+                email: 'test2@example.com',
+                phone: '123456789',
+                password: 'password',
+                role: Role.USER,
+                projects: []
+            }
+
+        });
+
+    });
+
+    it('should return one project', () => {
+
+        const result = controller.findOne('2');
+
+        expect(result).toEqual({
+
+            id: '2', 
+            name: 'Project 2', 
+            email: 'project2@example.com', 
+            description: 'project2 description', 
+            type: ProjectType.PRE,
+            creatorId: '2',
+            creator: {
+                id: '2',
+                name: 'Test User',
+                email: 'test2@example.com',
+                phone: '123456789',
+                password: 'password',
+                role: Role.USER,
+                projects: []
+            }
+
+        });
+
+    });
+
+    it('should return all the projects', async () => {
+
+        const result = await controller.findAll();
+
+        expect(result).toEqual([
+
+            {
+                id: '1', 
+                name: 'Project 1', 
+                email: 'project1@example.com', 
+                description: 'project1 description', 
+                type: ProjectType.PRE,
+                creatorId: '1',
+                creator: {
+                    id: '1',
+                    name: 'Test User',
+                    email: 'test@example.com',
+                    phone: '123456789',
+                    password: 'password',
+                    role: Role.USER,
+                    projects: []
+                },
+            },
+            {
+                id: '2', 
+                name: 'Project 2', 
+                email: 'project2@example.com', 
+                description: 'project2 description', 
+                type: ProjectType.PRE,
+                creatorId: '2',
+                creator: {
+                    id: '2',
+                    name: 'Test User',
+                    email: 'test2@example.com',
+                    phone: '123456789',
+                    password: 'password',
+                    role: Role.USER,
+                    projects: []
+                },
+            },
+
+        ]);
+
+        expect(mockProjectsService.findAll).toHaveBeenCalled();
+
     });
 
     it('should be defined', () => {
