@@ -99,23 +99,56 @@ describe('ProjectsController', () => {
                 projects: []
             },})),
 
-            findProjectsByUser: jest.fn().mockReturnValue({
-    id: '2',
-    name: 'Project 2',
-    email: 'project2@example.com',
-    description: 'project2 description', 
-    type: ProjectType.PRE,
-    creatorId: '2',
-    creator: {
-        id: '2',
-        name: 'Test User',
-        email: 'test2@example.com',
-        phone: '123456789',
-        password: 'password',
-        role: Role.USER,
-        projects: [],
-    },
-}),
+        findProjectsByUser: jest.fn().mockReturnValue({
+            id: '2',
+            name: 'Project 2',
+            email: 'project2@example.com',
+            description: 'project2 description', 
+            type: ProjectType.PRE,
+            creatorId: '2',
+            creator: {
+                id: '2',
+                name: 'Test User',
+                email: 'test2@example.com',
+                phone: '123456789',
+                password: 'password',
+                role: Role.USER,
+            projects: [],
+        },}),
+
+        update: jest.fn().mockReturnValue({
+            id: '2',
+            name: 'Project 2',
+            email: 'project2@example.com',
+            description: 'project2 description', 
+            type: ProjectType.PRE,
+            creatorId: '2',
+            creator: {
+                id: '2',
+                name: 'Test User',
+                email: 'test2@example.com',
+                phone: '123456789',
+                password: 'password',
+                role: Role.USER,
+            projects: [],
+        },}),
+
+        delete: jest.fn().mockReturnValue({
+            id: '2',
+            name: 'Project 2',
+            email: 'project2@example.com',
+            description: 'project2 description', 
+            type: ProjectType.PRE,
+            creatorId: '2',
+            creator: {
+                id: '2',
+                name: 'Test User',
+                email: 'test2@example.com',
+                phone: '123456789',
+                password: 'password',
+                role: Role.USER,
+            projects: [],
+        },}),
             
 
         // Define otros métodos de ProjectsService según sea necesario
