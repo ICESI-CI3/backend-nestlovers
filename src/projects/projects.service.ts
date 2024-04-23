@@ -113,4 +113,20 @@ export class ProjectsService {
 
     return this.projectsRepository.remove(project);
   }
+
+  /**
+   * Creates multiple projects with seed data.
+   * 
+   * @param projectsSeed The seed data to create the projects.
+   * @param creatorId The user id that creates the projects.
+   */
+  async createProjectsWithSeedData(projectsSeed: CreateProjectDto[], creatorId: string) {
+    for (const project of projectsSeed) {
+      const projectExists = await this.projectsRepository.findOneBy({ name: project.name });
+
+      if (!projectExists) {
+        await this.create(project, creatorId);
+      }
+    }
+  }
 }

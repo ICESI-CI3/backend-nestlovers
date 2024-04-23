@@ -5,6 +5,8 @@ import { User } from '../users/entities/user.entity';
 import { LoginDto } from 'src/auth/dto/login.dto';
 import { UsersService } from 'src/users/users.service';
 import { Role } from 'src/common/enums/rol.enum';
+import { ProjectsService } from 'src/projects/projects.service';
+import { projectsSeed } from './data/projects.seed';
 
 @Injectable()
 export class SeedService {
@@ -14,6 +16,7 @@ export class SeedService {
     constructor(
         private readonly authService: AuthService,
         private readonly userService: UsersService,
+        private readonly projectService: ProjectsService,
     ) {}
 
     /**
@@ -25,6 +28,8 @@ export class SeedService {
         this.loginSuperAdmin();
 
         this.registerUsersWithSeedData();
+
+        this.createProjects();
 
         return 'Database populated successfully';
     }
@@ -51,5 +56,14 @@ export class SeedService {
         const seedAdminUser = await this.userService.findOneByEmail(usersSeed[0].email);
 
         this.userService.assignRole(seedAdminUser.id, roleAdminAssignment);
+    }
+
+    /**
+     * Create the projects with the seed data.
+     */
+    private async createProjects() {
+        const normalUser = await this.userService.findOneByEmail(usersSeed[1].email);
+
+        await this.projectService.createProjectsWithSeedData(projectsSeed, normalUser.id);
     }
 }
