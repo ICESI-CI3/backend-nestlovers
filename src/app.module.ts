@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import * as dotenv from 'dotenv';
 import { APP_PIPE } from '@nestjs/core';
 import { ProjectsModule } from './projects/projects.module';
+import { DocumentsModule } from './documents/documents.module';
+import { SeedModule } from './seed/seed.module';
 
 dotenv.config();
 
@@ -15,6 +17,8 @@ dotenv.config();
     AuthModule,
     UsersModule,
     ProjectsModule,
+    DocumentsModule,
+    SeedModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
