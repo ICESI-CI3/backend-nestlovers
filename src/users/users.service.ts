@@ -84,4 +84,20 @@ export class UsersService {
 
     return this.usersRepository.save({ ...user, role: assignRoleDto.role });
   }
+
+  /**
+   * Removes a user from the database.
+   * 
+   * @param id The id of the user to remove.
+   * @returns The user removed.
+   */
+  async remove(id: string) {
+    const user = await this.findOne(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return this.usersRepository.remove(user);
+  }
 }

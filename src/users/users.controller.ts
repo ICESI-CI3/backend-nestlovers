@@ -65,8 +65,20 @@ export class UsersController {
   //   return this.usersService.update(+id, updateUserDto);
   // }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   // return this.usersService.remove(+id);
-  // }
+  /**
+   * Removes a user from the database.
+   * 
+   * Only a user with the SUPER_ADMIN role can remove users.
+   * 
+   * @param id The id of the user to remove.
+   * @returns The removed user.
+   */
+  @Delete('remove/:id')
+  @Auth([ Role.SUPER_ADMIN ])
+  remove(
+    @Param('id') 
+    id: string
+  ) {
+    return this.usersService.remove(id);
+  }
 }
