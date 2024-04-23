@@ -121,12 +121,18 @@ export class ProjectsService {
    * @param creatorId The user id that creates the projects.
    */
   async createProjectsWithSeedData(projectsSeed: CreateProjectDto[], creatorId: string) {
+    const projects: Project[] = [];
+
     for (const project of projectsSeed) {
-      const projectExists = await this.projectsRepository.findOneBy({ name: project.name });
+      let projectExists = await this.projectsRepository.findOneBy({ name: project.name });
 
       if (!projectExists) {
-        await this.create(project, creatorId);
+        projectExists = await this.create(project, creatorId);
       }
+
+      projects.push(projectExists);
     }
+
+    return projects;
   }
 }
