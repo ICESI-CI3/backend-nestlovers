@@ -11,4 +11,9 @@ export const projectsSeed = [
         "description": "Description of seed project 2",
         "type": ProjectType.POS
     },
+    {
+        "name": "Seed Project 3",
+        "description": "Description of seed project 3",
+        "type": ProjectType.EC
+    },
 ]

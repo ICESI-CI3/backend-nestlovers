@@ -24,26 +24,12 @@ export class SeedService {
      * 
      * @returns A message indicating that the database has been populated successfully.
      */
-    populateDB() {
-        this.loginSuperAdmin();
+    async populateDB() {
+        await this.registerUsersWithSeedData();
 
-        this.registerUsersWithSeedData();
-
-        this.createProjects();
+        await this.createProjects();
 
         return 'Database populated successfully';
-    }
-
-    /**
-     * Login the superadmin user to get its token.
-     */
-    private async loginSuperAdmin() {
-        const superAdminCredentials = {
-            "email": "admin@test.com",
-            "password": "Soyeljefazo1"
-        };
-
-        this.superadminUserToken = await this.authService.login(superAdminCredentials);
     }
 
     /**
@@ -62,8 +48,13 @@ export class SeedService {
      * Create the projects with the seed data.
      */
     private async createProjects() {
-        const normalUser = await this.userService.findOneByEmail(usersSeed[1].email);
+        const normalUser1 = await this.userService.findOneByEmail(usersSeed[1].email);
+        const normaluser1Projects = projectsSeed.slice(0, 2);
 
-        await this.projectService.createProjectsWithSeedData(projectsSeed, normalUser.id);
+        const normalUser2 = await this.userService.findOneByEmail(usersSeed[2].email);
+        const normaluser2Projects = projectsSeed.slice(2);
+
+        await this.projectService.createProjectsWithSeedData(normaluser1Projects, normalUser1.id);
+        await this.projectService.createProjectsWithSeedData(normaluser2Projects, normalUser2.id);
     }
 }
