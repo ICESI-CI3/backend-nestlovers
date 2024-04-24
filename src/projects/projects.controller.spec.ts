@@ -208,7 +208,9 @@ describe('ProjectsController', () => {
 
     });
 
-    it('should return the updated project', () => {
+    
+
+    it('should return the updated project', async () => {
 
         const updateDto = {
             name: 'project 3',
@@ -216,7 +218,11 @@ describe('ProjectsController', () => {
             type: ProjectType.POS
         }
 
-        expect(controller.update('2', updateDto)).toEqual({
+        await controller.update('2', updateDto);
+
+        const updatedproject = await service.findOne('2');
+        
+        expect(updatedproject).toEqual({
             id: '2',
             name: 'Project 3',
             email: 'project2@example.com',
