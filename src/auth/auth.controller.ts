@@ -43,6 +43,12 @@ export class AuthController {
         return this.authService.login(loginDto);
     }
 
+    /**
+     * The logout method is a GET route handler that receives a request object as an argument. This object contains the token in the authorization header.
+     * 
+     * @param request The request object.
+     * @returns The token information.
+     */
     @Get('logout')
     @Auth([ Role.ADMIN, Role.USER ])
     logout(
