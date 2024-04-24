@@ -4,9 +4,9 @@ import { UpdateDocumentDto } from './dto/update-document.dto';
 import { Document } from './entities/document.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ProjectsService } from 'src/projects/projects.service';
-import { Phase } from 'src/common/enums/phase.enum';
-import { UsersService } from 'src/users/users.service';
+import { ProjectsService } from '../projects/projects.service';
+import { Phase } from '../common/enums/phase.enum';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class DocumentsService {

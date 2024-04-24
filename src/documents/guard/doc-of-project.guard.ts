@@ -1,5 +1,5 @@
 import { BadRequestException, CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import { ProjectsService } from 'src/projects/projects.service';
+import { ProjectsService } from '../../projects/projects.service';
 import { DocumentsService } from '../documents.service';
 
 /**

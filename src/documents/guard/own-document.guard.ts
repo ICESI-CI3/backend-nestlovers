@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { DocumentsService } from '../documents.service';
-import { ProjectsService } from 'src/projects/projects.service';
+import { ProjectsService } from '../../projects/projects.service';
 
 /**
  * Create a new guard called OwnDocumentGuard that implements the CanActivate interface. This guard will check if the user is the owner of the document.

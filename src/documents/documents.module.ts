@@ -4,9 +4,8 @@ import { DocumentsController } from './documents.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Document } from './entities/document.entity';
 import { ProjectsModule } from '../projects/projects.module';
-import { UsersModule } from 'src/users/users.module';
-import { CommonModule } from 'src/common/common.module';
-import { AuthModule } from 'src/auth/auth.module';
+import { UsersModule } from '../users/users.module';
+import { CommonModule } from '../common/common.module';
 
 @Module({
   imports: [
