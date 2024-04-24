@@ -1,7 +1,8 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Inject, Injectable, UnauthorizedException, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import * as dotenv from 'dotenv';
+import { AuthService } from 'src/auth/auth.service';
 
 dotenv.config();
 
@@ -10,7 +11,7 @@ dotenv.config();
  * to a specific path or endpoint is processed. The canActivate function returns a Boolean value or a promise that 
  * resolves to a Boolean value. Depending on the result of this function, access to the protected endpoint will be allowed or denied.
  * 
- * The AuthGuard class ensures that only authenticated users (with a valid token) can access the protected routes.
+ * The AuthGuard class ensures that only authenticated users (with a valid token) can access the protected routes. Also, it checks if the token is in the whitelist.
  * 
  * This guard can be added to the different routes that need to be protected. 
  */
@@ -19,6 +20,7 @@ export class AuthGuard implements CanActivate {
   
   constructor(
     private readonly jwtService: JwtService,
+    private readonly authService: AuthService
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -34,6 +36,12 @@ export class AuthGuard implements CanActivate {
     try {
       
       const payload = this.jwtService.verify(token);
+
+      const isWhilistedToken = await this.authService.findToken(token.toString());
+
+      if (!isWhilistedToken) {
+        throw new UnauthorizedException('Unauthorized');
+      }
 
       // Inject the user object into the request object. It is useful to access the user object in the controller.
       request.user = payload;
