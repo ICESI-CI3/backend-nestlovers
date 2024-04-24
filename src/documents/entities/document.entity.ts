@@ -1,5 +1,5 @@
-import { Phase } from "src/common/enums/phase.enum";
-import { Project } from "src/projects/entities/project.entity";
+import { Phase } from "../../common/enums/phase.enum";
+import { Project } from "../../projects/entities/project.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()

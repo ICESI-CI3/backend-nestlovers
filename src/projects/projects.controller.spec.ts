@@ -150,8 +150,6 @@ describe('ProjectsController', () => {
             projects: [],
         },}),
             
-
-        // Define otros métodos de ProjectsService según sea necesario
     };
 
     beforeEach(async () => {
@@ -163,7 +161,7 @@ describe('ProjectsController', () => {
                   secret: process.env.SECRET_KEY,
                   signOptions: { expiresIn: '1d' },
                 }),
-              ],
+            ],
             
             controllers: [ProjectsController, UsersController],
             providers: [
@@ -182,6 +180,62 @@ describe('ProjectsController', () => {
         controller = module.get<ProjectsController>(ProjectsController);
         service = module.get<ProjectsService>(ProjectsService);
     });
+/**
+ * 
+ * 
+ 
+    it('should return the deleted project', () => {
+
+        expect(controller.remove('2')).toEqual({
+
+            id: '2',
+            name: 'Project 2',
+            email: 'project2@example.com',
+            description: 'project2 description', 
+            type: ProjectType.PRE,
+            creatorId: '2',
+            creator: {
+                id: '2',
+                name: 'Test User',
+                email: 'test2@example.com',
+                phone: '123456789',
+                password: 'password',
+                role: Role.USER,
+                projects: [],
+            }
+
+        });
+
+    });
+
+    it('should return the updated project', () => {
+
+        const updateDto = {
+            name: 'project 3',
+            description: 'Description of project 3',
+            type: ProjectType.POS
+        }
+
+        expect(controller.update('2', updateDto)).toEqual({
+            id: '2',
+            name: 'Project 3',
+            email: 'project2@example.com',
+            description: 'Description of project 3', 
+            type: ProjectType.POS,
+            creatorId: '2',
+            creator: {
+                id: '2',
+                name: 'Test User',
+                email: 'test2@example.com',
+                phone: '123456789',
+                password: 'password',
+                role: Role.USER,
+            projects: [],
+        }});
+        
+    });
+
+    */
 
     it('should return one project by its creator id', () => {
 
