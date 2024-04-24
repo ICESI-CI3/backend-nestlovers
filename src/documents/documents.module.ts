@@ -16,5 +16,6 @@ import { CommonModule } from 'src/common/common.module';
   ],
   controllers: [DocumentsController],
   providers: [DocumentsService],
+  exports: [DocumentsService],
 })
 export class DocumentsModule {}
