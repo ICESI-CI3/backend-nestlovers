@@ -1,10 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, ExecutionContext } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Auth } from '../common/decorators/auth.decorators';
 import { Role } from '../common/enums/rol.enum';
 import { AssignRoleDto } from './dto/assign-role.dto';
+import { Request } from 'express';
+import { UserActive } from 'src/common/decorators/user-active.decorator';
+import { UserActiveI } from 'src/common/interfaces/user-active.interface';
+// import { Request } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -60,13 +64,53 @@ export class UsersController {
     return this.usersService.assignRole(userId, assignRoleDto);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.usersService.update(+id, updateUserDto);
-  // }
+  /**
+   * Updates a user in the database.
+   * 
+   * Only a user with the SUPER_ADMIN role can update any user.
+   * 
+   * @param id The id of the user to update.
+   * @param updateUserDto The data to update.
+   * @returns The updated user.
+   */
+  @Patch('update/:id')
+  @Auth([ Role.SUPER_ADMIN ])
+  update(
+    @Param('id') 
+    id: string, 
+    
+    @Body() 
+    updateUserDto: UpdateUserDto
+  ) {
+    return this.usersService.update(id, updateUserDto);
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   // return this.usersService.remove(+id);
-  // }
+  @Patch('updateMe')
+  @Auth([ Role.ADMIN, Role.USER ])
+  updateMe(    
+    @Body() 
+    updateUserDto: UpdateUserDto,
+
+    @UserActive()
+    user: UserActiveI
+  ) {
+    return this.usersService.update(user.id, updateUserDto);
+  }
+
+  /**
+   * Removes a user from the database.
+   * 
+   * Only a user with the SUPER_ADMIN role can remove users.
+   * 
+   * @param id The id of the user to remove.
+   * @returns The removed user.
+   */
+  @Delete('remove/:id')
+  @Auth([ Role.SUPER_ADMIN ])
+  remove(
+    @Param('id') 
+    id: string
+  ) {
+    return this.usersService.remove(id);
+  }
 }

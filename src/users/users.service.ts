@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { AssignRoleDto } from './dto/assign-role.dto';
+import * as bcryptjs from 'bcryptjs';
+
 
 @Injectable()
 export class UsersService {
@@ -83,5 +85,48 @@ export class UsersService {
     }
 
     return this.usersRepository.save({ ...user, role: assignRoleDto.role });
+  }
+
+  /**
+   * Updates a user in the database.
+   * 
+   * @param id The id of the user to update.
+   * @param updateUserDto The data to update.
+   * @returns The user updated.
+   */
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.findOne(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (updateUserDto.password) {
+      const password = await bcryptjs.hash(updateUserDto.password, 10);
+
+      updateUserDto = { ...updateUserDto, password: password };
+    }
+
+    const updatedUser = await this.usersRepository.save({ ...user, ...updateUserDto });
+
+    delete updatedUser.password;
+
+    return updatedUser;
+  }
+
+  /**
+   * Removes a user from the database.
+   * 
+   * @param id The id of the user to remove.
+   * @returns The user removed.
+   */
+  async remove(id: string) {
+    const user = await this.findOne(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return this.usersRepository.remove(user);
   }
 }
