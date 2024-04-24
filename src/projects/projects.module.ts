@@ -6,10 +6,12 @@ import { Project } from './entities/project.entity';
 import { UsersService } from '../users/users.service';
 import { UsersModule } from '../users/users.module';
 import { CommonModule } from 'src/common/common.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Project]),
+    AuthModule,
     UsersModule,
     CommonModule,
   ],

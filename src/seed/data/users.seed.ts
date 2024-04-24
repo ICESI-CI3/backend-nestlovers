@@ -10,5 +10,10 @@ export const usersSeed = [
         "name": "Normal user",
         "email": "normaluserseed@test.com",
         "password": "123456"
-    }
+    },
+    {
+        "name": "Normal user2",
+        "email": "normaluser2seed@test.com",
+        "password": "123456"
+    },
 ];

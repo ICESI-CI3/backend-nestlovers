@@ -11,10 +11,12 @@ import { CommonModule } from '../common/common.module';
   imports: [
     TypeOrmModule.forFeature([Document]),
     ProjectsModule,
+    AuthModule,
     UsersModule,
     CommonModule,
   ],
   controllers: [DocumentsController],
   providers: [DocumentsService],
+  exports: [DocumentsService],
 })
 export class DocumentsModule {}

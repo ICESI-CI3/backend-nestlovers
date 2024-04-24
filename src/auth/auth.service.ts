@@ -4,12 +4,19 @@ import { RegisterDto } from './dto/register.dto';
 import * as bcryptjs from 'bcryptjs';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../users/entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Token } from './entities/token.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
 
+    private tokenExpirationTime = 24;
+
     constructor(
+        @InjectRepository(Token)
+        private readonly tokenRepository: Repository<Token>,
         private readonly userService: UsersService,
         private readonly jwtService: JwtService,
     ) {}
@@ -65,9 +72,62 @@ export class AuthService {
         const payload = { id: user.id, email: user.email, role: user.role };
         const token = await this.jwtService.signAsync(payload); // Generates JWT token
 
+        this.whitelistToken(token);
+
         return {
             token,
         };
+    }
+
+    /**
+     * Whitelists a token to allow access to the application.
+     * 
+     * Each token has an expiration date that is the current date plus 24 hours.
+     * 
+     * Note: As this system can work with DBs placed in different timezones, it is recommended to adjust the expiration date to an according one with the timezone of the DB.
+     * 
+     * @param token The token to whitelist.
+     * @returns The token if it is successfully whitelisted. An message otherwise.
+     */
+    async whitelistToken(token: string) {
+        const tokenExists = await this.tokenRepository.findOneBy({ token });
+        
+        if (tokenExists) {
+            return { message: 'Token already exists' };
+        }
+
+        const currentdate = new Date(Date.now());
+        const expirationdate = new Date(currentdate); 
+        expirationdate.setHours(expirationdate.getHours() + this.tokenExpirationTime); // Expires in 24 hours
+
+        return await this.tokenRepository.save({ token, expirationdate });
+    }
+
+    /**
+     * Logout a user.
+     * 
+     * @param token The token to logout.
+     * @returns The token if it is successfully logged out. An message otherwise.
+     */
+    async logout(token: string) {
+        const tokenExists = await this.findToken(token);
+        
+        if (!tokenExists) {
+            // throw new UnauthorizedException('Invalid token');
+            return { message: 'Invalid token' };
+        }
+
+        return await this.tokenRepository.delete(tokenExists.id);
+    }
+
+    /**
+     * Find a token in the whitelist.
+     * 
+     * @param token The token to find.
+     * @returns The token if it is found. An message otherwise.
+     */
+    async findToken(token: string) {
+        return await this.tokenRepository.findOneBy({ token });
     }
 
     async profile({ email, role }: { email: string, role: string }) {
