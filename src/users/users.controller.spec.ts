@@ -81,7 +81,6 @@ describe('UsersController', () => {
     
         const result = await controller.findAll();
     
-        // Verificamos que el resultado sea la lista de usuarios esperada
         expect(result).toEqual([
             {
                 id: '1', name: 'User 1', email: 'user1@example.com', phone: '123456789', password: '11111', role: Role.USER,

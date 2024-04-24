@@ -2,10 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { DocumentsService } from './documents.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
-import { Role } from 'src/common/enums/rol.enum';
-import { AuthOwnProject } from 'src/projects/decorators/own-project.decorator';
-import { Phase } from 'src/common/enums/phase.enum';
-import { Auth } from 'src/common/decorators/auth.decorators';
+import { Role } from '../common/enums/rol.enum';
+import { AuthOwnProject } from '../projects/decorators/own-project.decorator';
+import { Phase } from '../common/enums/phase.enum';
+import { Auth } from '../common/decorators/auth.decorators';
 import { UserActive } from 'src/common/decorators/user-active.decorator';
 import { UserActiveI } from 'src/common/interfaces/user-active.interface';
 import { DocOfProjectGuard } from './guard/doc-of-project.guard';
