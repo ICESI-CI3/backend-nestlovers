@@ -6,6 +6,7 @@ import { Role } from '../common/enums/rol.enum';
 import { Auth } from '../common/decorators/auth.decorators';
 import { UserActive } from 'src/common/decorators/user-active.decorator';
 import { UserActiveI } from 'src/common/interfaces/user-active.interface';
+import { Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -40,6 +41,17 @@ export class AuthController {
         loginDto: LoginDto,
     ) {
         return this.authService.login(loginDto);
+    }
+
+    @Get('logout')
+    @Auth([ Role.ADMIN, Role.USER ])
+    logout(
+        @Req()
+        request: Request,
+    ) {
+        const token = request.headers.authorization.split(' ')[1];
+
+        return this.authService.logout(token);
     }
 
     @Get('profile')
