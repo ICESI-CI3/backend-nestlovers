@@ -54,7 +54,7 @@ export class ProjectsController {
    * @returns The project with the given id.
    */
   @Get('byID/:id')
-  @Auth([ Role.ADMIN ])
+  @Auth([ Role.ADMIN, Role.USER ])
   findOne(
     @Param('id') 
     id: string

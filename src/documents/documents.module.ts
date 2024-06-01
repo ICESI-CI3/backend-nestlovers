@@ -6,6 +6,7 @@ import { Document } from './entities/document.entity';
 import { ProjectsModule } from '../projects/projects.module';
 import { UsersModule } from '../users/users.module';
 import { CommonModule } from '../common/common.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
