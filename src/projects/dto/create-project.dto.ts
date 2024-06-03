@@ -1,5 +1,5 @@
-import { IsEnum, IsNotEmpty, IsString } from "class-validator";
-import { ProjectType } from "../../common/enums/project-type.enum";
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { ProjectType } from '../../common/enums/project-type.enum';
 
 export class CreateProjectDto {
     @IsNotEmpty()
