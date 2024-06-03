@@ -13,37 +13,39 @@ import { SeedModule } from './seed/seed.module';
 dotenv.config();
 
 @Module({
-  imports: [
-    AuthModule,
-    UsersModule,
-    ProjectsModule,
-    DocumentsModule,
-    SeedModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT, 10),
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
-      ssl: process.env.DB_SSL === 'require' ? { rejectUnauthorized: false } : false,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
-    }),
-  ],
+    imports: [
+        AuthModule,
+        UsersModule,
+        ProjectsModule,
+        DocumentsModule,
+        SeedModule,
+        TypeOrmModule.forRoot({
+            type: 'postgres',
+            host: process.env.DB_HOST,
+            port: parseInt(process.env.DB_PORT, 10),
+            username: process.env.DB_USERNAME,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_DATABASE,
+            ssl:
+                process.env.DB_SSL === 'require'
+                    ? { rejectUnauthorized: false }
+                    : false,
+            entities: [__dirname + '/**/*.entity{.ts,.js}'],
+            synchronize: true,
+        }),
+    ],
 
-  controllers: [],
+    controllers: [],
 
-  providers: [
-    {
-      provide: APP_PIPE,
-      useValue: new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-        transform: true,
-      }),
-    }
-  ],
+    providers: [
+        {
+            provide: APP_PIPE,
+            useValue: new ValidationPipe({
+                whitelist: true,
+                forbidNonWhitelisted: true,
+                transform: true,
+            }),
+        },
+    ],
 })
-
 export class AppModule {}

@@ -9,15 +9,15 @@ import { CommonModule } from '../common/common.module';
 import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Document]),
-    ProjectsModule,
-    AuthModule,
-    UsersModule,
-    CommonModule,
-  ],
-  controllers: [DocumentsController],
-  providers: [DocumentsService],
-  exports: [DocumentsService],
+    imports: [
+        TypeOrmModule.forFeature([Document]),
+        ProjectsModule,
+        AuthModule,
+        UsersModule,
+        CommonModule,
+    ],
+    controllers: [DocumentsController],
+    providers: [DocumentsService],
+    exports: [DocumentsService],
 })
 export class DocumentsModule {}
