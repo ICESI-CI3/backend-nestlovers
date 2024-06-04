@@ -61,7 +61,7 @@ export class DocumentsController {
      * @returns The document with the given id.
      */
     @Get('byID/:id')
-    @Auth([Role.ADMIN])
+    @Auth([Role.ADMIN, Role.USER])
     findOne(
         @Param('id')
         id: string,
