@@ -31,26 +31,16 @@ export class DocumentsController {
      * @param projectId Unique identifier of the project the document belongs to.
      * @returns The created document.
      */
-    @Post('docPhase1Part1/project/:id')
+    @Post('create/project/:id')
     @AuthOwnProject([Role.ADMIN, Role.USER])
-    createPhase1Part1(
+    create(
         @Body()
         createDocumentDto: CreateDocumentDto,
 
         @Param('id')
         projectId: string,
     ) {
-        const name = `Fase 1. (1. A_B_C) - Project ${projectId}`;
-        const phase = Phase.PHASE1;
-        const part = 1;
-
-        return this.documentsService.create(
-            createDocumentDto,
-            name,
-            phase,
-            part,
-            projectId,
-        );
+        return this.documentsService.create(createDocumentDto, projectId);
     }
 
     /**
