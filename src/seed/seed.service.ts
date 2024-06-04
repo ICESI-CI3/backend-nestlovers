@@ -76,8 +76,8 @@ export class SeedService {
         const project2 = this.projects[1];
         const project3 = this.projects[2];
         
-        await this.documentService.create(docSeed[0], `Seed Document 1 - Project ${project1.id}`, Phase.PHASE1, 1, project1.id);
-        await this.documentService.create(docSeed[1], `Seed Document 1 - Project ${project2.id}`, Phase.PHASE1, 1, project2.id);
-        await this.documentService.create(docSeed[2], `Seed Document 1 - Project ${project3.id}`, Phase.PHASE1, 1, project3.id);
+        // await this.documentService.create(docSeed[0], `Seed Document 1 - Project ${project1.id}`, Phase.PHASE1, 1, project1.id);
+        // await this.documentService.create(docSeed[1], `Seed Document 1 - Project ${project2.id}`, Phase.PHASE1, 1, project2.id);
+        // await this.documentService.create(docSeed[2], `Seed Document 1 - Project ${project3.id}`, Phase.PHASE1, 1, project3.id);
     }
 }
